@@ -1,90 +1,85 @@
-#include <gtk-3.0/gtk/gtk.h>
+#include <gtk/gtk.h>
+#include <stdio.h>
+#include "sendMail.h"
+#include "displayRcMail.h"
 
-/* 下面是两个回调函数 */
 
-static void print_hello (GtkWidget *widget,
-                         gpointer   data)
+int main(int argc,char *argv[])
 {
-    g_print ("Hello World\n");
-}
-
-static gboolean on_delete_event (GtkWidget *widget,
-                                 GdkEvent  *event,
-                                 gpointer   data)
-{
-    /* If you return FALSE in the "delete_event" signal handler,
-     * GTK will emit the "destroy" signal. Returning TRUE means
-     * you don't want the window to be destroyed.
-     *
-     * This is useful for popping up 'are you sure you want to quit?'
-     * type dialogs.
-     */
-
-    g_print ("delete event occurred\n");
-    gtk_widget_destroy(widget);
-    return TRUE;
-}
-
-int main (int argc, char *argv[])
-{
-    /* GtkWidget is the storage type for widgets */
-    GtkWidget *window;
-    GtkWidget *button;
-
-    /* This is called in all GTK applications. Arguments are parsed
-     * from the command line and are returned to the application.
-     */
-    gtk_init (&argc, &argv);
-
-    /* create a new window, and set its title */
-    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title (GTK_WINDOW (window), "Hello");
-    gtk_window_set_default_size(GTK_WINDOW(window), 230, 150);
-
-    /* When the window emits the "delete-event" signal (which is emitted
-     * by GTK+ in response to an event coming from the window manager,
-     * usually as a result of clicking the "close" window control), we
-     * ask it to call the on_delete_event() function as defined above.
-     *
-     * The data passed to the callback function is NULL and is ignored
-     * in the callback function.
-     */
-    g_signal_connect (window, "delete-event", G_CALLBACK (on_delete_event), NULL);
-
-    /* Here we connect the "destroy" event to the gtk_main_quit() function.
-     *
-     * This signal is emitted when we call gtk_widget_destroy() on the window,
-     * or if we return FALSE in the "delete_event" callback.
-     */
-    g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
-
-    /* Sets the border width of the window. */
-    gtk_container_set_border_width (GTK_CONTAINER (window), 10);
-
-    /* Creates a new button with the label "Hello World". */
-    button = gtk_button_new_with_label ("Hello World");
-
-    /* When the button receives the "clicked" signal, it will call the
-     * function print_hello() passing it NULL as its argument.
-     *
-     * The print_hello() function is defined above.
-     */
-    g_signal_connect (button, "clicked", G_CALLBACK (print_hello), NULL);
-
-    /* This packs the button into the window. A GtkWindow inherits from GtkBin,
-     * which is a special container that can only have one child
-     */
-    gtk_container_add (GTK_CONTAINER (window), button);
-
-    /* .he final step is to display this newly created widget */
-    gtk_widget_show_all (window);
-
-    /* All GTK applications must have a gtk_main(). Control ends here
-     * and waits for an event to occur (like a key press or a mouse event),
-     * until gtk_main_quit() is called.
-     */
-    gtk_main ();
-
+    gtk_init(&argc,&argv);
+    displayWindow();
+    gtk_main();
     return 0;
 }
+
+void displayWindow(int argc,char *argv[])
+{
+
+    GtkWidget *fixed;
+    GtkWidget *window;
+    GtkWidget *shoujianxiang;//for fixed
+    GtkWidget *xieyoujian;
+    GtkWidget *fajianxiang;
+    GtkWidget *lajixiang;
+    GtkWidget *heimingdan;
+    GtkWidget *lianxiren;//for fixed
+    GtkWidget *label_title;
+
+    char *welcome="我们的邮箱\n希望你能喜欢";
+
+//
+    gtk_init(&argc,&argv);
+
+//
+    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    fixed = gtk_fixed_new();
+    gtk_container_add(GTK_CONTAINER(window),fixed);
+
+/*chushihua to window*/
+    gtk_window_set_position(GTK_WINDOW(window),GTK_WIN_POS_CENTER);
+    gtk_widget_set_size_request(window,1500,1000);
+    gtk_window_set_resizable(GTK_WINDOW(window),FALSE);
+    gtk_window_set_title(GTK_WINDOW(window),"Email");
+    gtk_container_set_border_width(GTK_CONTAINER(window),0);
+
+/*chuli to button*/
+    xieyoujian = gtk_button_new_with_label("写     邮     件");
+    shoujianxiang = gtk_button_new_with_label("收     件     箱");
+    lianxiren = gtk_button_new_with_label("联     系     人");
+    heimingdan = gtk_button_new_with_label("黑     名     单");
+    fajianxiang = gtk_button_new_with_label("发     件     箱");
+    lajixiang = gtk_button_new_with_label("垃     圾     箱");
+    gtk_fixed_put(GTK_FIXED(fixed),xieyoujian,30,300);
+    gtk_widget_set_size_request(xieyoujian,375,70);
+    gtk_fixed_put(GTK_FIXED(fixed),shoujianxiang,30,400);
+    gtk_widget_set_size_request(shoujianxiang,375,70);
+    gtk_fixed_put(GTK_FIXED(fixed),fajianxiang,30,500);
+    gtk_widget_set_size_request(fajianxiang,375,70);
+    gtk_fixed_put(GTK_FIXED(fixed),lajixiang,30,600);
+    gtk_widget_set_size_request(lajixiang,375,70);
+    gtk_fixed_put(GTK_FIXED(fixed),lianxiren,30,700);
+    gtk_widget_set_size_request(lianxiren,375,70);
+    gtk_fixed_put(GTK_FIXED(fixed),heimingdan,30,700);
+    gtk_widget_set_size_request(heimingdan,375,70);
+    set_widget_font_size(shoujianxiang,24,TRUE);
+    set_widget_font_size(xieyoujian,24,TRUE);
+    set_widget_font_size(fajianxiang,24,TRUE);
+    set_widget_font_size(lajixiang,24,TRUE);
+    set_widget_font_size(lianxiren,24,TRUE);
+    set_widget_font_size(heimingdan,24,TRUE);
+
+
+/*处理标签*/
+    label_title= gtk_label_new(welcome);   //新建标签
+    gtk_fixed_put(GTK_FIXED(fixed),label_title,160,58);
+    gtk_label_set_justify(GTK_LABEL(label_title),GTK_JUSTIFY_CENTER);
+
+
+//写邮件
+    g_signal_connect(xieyoujian, "clicked", G_CALLBACK(interface_SendMail), fixed);
+    g_signal_connect(shoujianxiang, "clicked", G_CALLBACK(displayRcMail), fixed);
+
+    gtk_widget_show_all(window);
+}
+
 
