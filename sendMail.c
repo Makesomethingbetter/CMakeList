@@ -5,25 +5,7 @@
 
 #include "sendMail.h"
 
-void set_widget_font_size(GtkWidget *widget, int size, gboolean is_button)
-{
-    GtkWidget *labelChild;
-    PangoFontDescription *font;
-    gint fontSize = size;
 
-    font = pango_font_description_from_string("Sans");          //"Sans"字体名
-    pango_font_description_set_size(font, fontSize*PANGO_SCALE);//设置字体大小
-
-    if(is_button){
-        labelChild = gtk_bin_get_child(GTK_BIN(widget));//取出GtkButton里的label
-    }else{
-        labelChild = widget;
-    }
-
-    //设置label的字体，这样这个GtkButton上面显示的字体就变了
-    gtk_widget_modify_font(GTK_WIDGET(labelChild), font);
-    pango_font_description_free(font);
-}
 
 void interface_SendMail(GtkButton *button,gpointer fixed)
 {
@@ -33,7 +15,6 @@ void interface_SendMail(GtkButton *button,gpointer fixed)
     GtkWidget *targetIdInput;
     GtkWidget *themeInput;
     GtkWidget *bodyInput;
-    GtkTextIter start,end;
     GtkTextBuffer *bodybuffer;
     GtkWidget *table;
     GtkWidget *lable_tip;
@@ -81,32 +62,48 @@ void interface_SendMail(GtkButton *button,gpointer fixed)
     gtk_widget_set_size_request(bodyInput,805,333);
     pack.ID=targetIdInput;
     pack.theme=themeInput;
-    gtk_text_buffer_get_bounds(GTK_TEXT_BUFFER(bodybuffer),&start,&end);/*获得缓冲区开始和结束位置的Iter*/
-
-    const GtkTextIter s=start,e=end;
-    pack.body=gtk_text_buffer_get_text(GTK_TEXT_BUFFER(bodybuffer),&s,&e,FALSE);/*获得文本框缓冲区文本*/
-
-
+    pack.body=bodybuffer;
 
 
 
     g_signal_connect(button_sendMail, "clicked",G_CALLBACK(sendEmail),&pack);
+    if(sendEmail==1)
+    {
+        GtkWidget *label_warn;
+        label_warn = gtk_label_new("发送成功");
+        gtk_fixed_put(GTK_FIXED(fixed),label_warn,960,900);//950为中线
+    }
+
 
 //显示
-    gtk_widget_show(bodyInput);
+
     gtk_widget_show_all(fixed);
 }
 
 
-void sendEmail(GtkButton *button_sendMail, gpointer date)
+gint sendEmail(GtkButton *button_sendMail, gpointer date)
 {
 
-
+    GtkTextIter start,end;
+    GtkTextBuffer *buffer;
     struct PACK *pack;
     pack = (struct PACK *)date;
+    buffer = pack->body;
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    gtk_text_buffer_get_end_iter(buffer, &end);
     g_print("%s",gtk_entry_get_text(GTK_ENTRY(pack->ID)));
+    g_print("%s",gtk_text_buffer_get_text(buffer,&start,&end,FALSE));
 
-//    g_print("%s",pack1.body);
+    gint goodsend=1;
+    if(goodsend==1)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+
 
 }
 
