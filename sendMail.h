@@ -10,6 +10,15 @@
     GtkWidget *theme;
     GtkTextBuffer  *body;
 }pack;
+
+struct RIGHT {
+    GtkWidget *bodyInput;
+    GtkWidget *table;
+    GtkWidget *lable_tip;
+    GtkWidget *lable_body;
+    GtkWidget *button_sendMail;
+    GtkWidget *button_cancel;
+}right;
 int sendEmail(GtkButton *button, gpointer date);
 void interface_SendMail(GtkButton *button,gpointer fixed);
 void cancel(GtkButton *button, gpointer date);

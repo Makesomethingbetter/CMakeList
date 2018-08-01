@@ -11,7 +11,14 @@
 struct REGPACK{
     GtkWidget *ID;
     GtkWidget *passwd;
+    GtkWidget *window;
 }regpack;
+
+struct LOGPACK1{
+    GtkWidget *ID;
+    GtkWidget *passwd;
+    GtkWidget *window;
+}logpack1;
 
 void registCheck(int argc,char *argv[],GtkButton *a, gpointer date);
 void registWindow(int argc,char *argv[],GtkButton *a, gpointer date);

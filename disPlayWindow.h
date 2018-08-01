@@ -9,6 +9,7 @@
 #include "displayRcMail.h"
 #include "sendMail.h"
 #include "set_font_size.h"
+#include "client.h"
 
 void disPlayWindow(int argc,char *argv[]);
 #endif //UNTITLED_DISPLAYWINDOW_H

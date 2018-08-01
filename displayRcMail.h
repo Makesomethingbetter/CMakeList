@@ -6,6 +6,7 @@
 #define UNTITLED_DISPLAYRCMAIL_H
 
 #include <gtk/gtk.h>
+#include "sendMail.h"
 void displayRcMail(int argc,char *argv[],GtkButton *button,gpointer fixed);
 
 #endif //UNTITLED_DISPLAYRCMAIL_H

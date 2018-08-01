@@ -7,10 +7,13 @@
 
 #include <gtk/gtk.h>
 #include "disPlayWindow.h"
+#include "client.h"
+
 
 struct LOGPACK{
     GtkWidget *ID;
     GtkWidget *passwd;
+    GtkWidget *window;
 }logpack;
 
 void logcheck(int argc,char *argv[],GtkButton *a, gpointer date);
