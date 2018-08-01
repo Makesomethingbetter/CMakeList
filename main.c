@@ -3,13 +3,13 @@
 #include "sendMail.h"
 #include "displayRcMail.h"
 #include "logcheck.h"
+#include "regist.h"
 
-void displayWindow(int argc,char *argv[]);
 
 
 int main(int argc,char *argv[])
 {
-    gtk_init(&argc,&argv);
+
     GtkWidget *logWindow;
     GtkWidget *fixed_log;
     GtkWidget *label_ID;
@@ -18,8 +18,7 @@ int main(int argc,char *argv[])
     GtkWidget *passwdEntry;
     GtkWidget *buttonSignIn;
     GtkWidget *buttonSignUp;
-    GtkWidget *log_table;
-
+    gtk_init(&argc,&argv);
 //登陆window
     logWindow=gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_widget_set_size_request(logWindow,600,400);
@@ -57,7 +56,7 @@ int main(int argc,char *argv[])
     logpack.passwd = passwdEntry;
 
     g_signal_connect(buttonSignIn, "clicked",G_CALLBACK(logcheck),&logpack);
-
+    g_signal_connect(buttonSignUp, "clicked",G_CALLBACK(registWindow),NULL);
 
 
 

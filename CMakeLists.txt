@@ -30,7 +30,7 @@ LINK_DIRECTORIES(${GTK3_LIBRARY_DIRS})
 ADD_DEFINITIONS(${GTK3_CFLAGS_OTHER})
 
 # Add an executable compiled from hello.c
-ADD_EXECUTABLE(untitled main.c main.c sendMail.c sendMail.h displayRcMail.c displayRcMail.h disPlayWindow.c disPlayWindow.h set_font_size.c set_font_size.h initialize.c initialize.h logcheck.c logcheck.h)
+ADD_EXECUTABLE(untitled main.c main.c sendMail.c sendMail.h displayRcMail.c displayRcMail.h disPlayWindow.c disPlayWindow.h set_font_size.c set_font_size.h initialize.c initialize.h logcheck.c logcheck.h regist.c regist.h)
 
 # Link the target to the GTK+ libraries
 TARGET_LINK_LIBRARIES(untitled ${GTK3_LIBRARIES})

@@ -10,8 +10,9 @@
     GtkWidget *theme;
     GtkTextBuffer  *body;
 }pack;
-gint sendEmail(GtkButton *button_sendMail, gpointer date);
+int sendEmail(GtkButton *button, gpointer date);
 void interface_SendMail(GtkButton *button,gpointer fixed);
+void cancel(GtkButton *button, gpointer date);
 
 
 

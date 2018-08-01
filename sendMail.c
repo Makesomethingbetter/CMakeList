@@ -4,25 +4,25 @@
 
 
 #include "sendMail.h"
-
+int send = 0;
+GtkWidget *bodyInput;
+GtkWidget *table;
+GtkWidget *lable_tip;
+GtkWidget *lable_body;
+GtkWidget *button_sendMail;
+GtkWidget *button_cancel;
 
 
 void interface_SendMail(GtkButton *button,gpointer fixed)
 {
     GtkWidget *lable_targetID;
     GtkWidget *lable_theme;
-    GtkWidget *lable_body;
     GtkWidget *targetIdInput;
     GtkWidget *themeInput;
-    GtkWidget *bodyInput;
     GtkTextBuffer *bodybuffer;
-    GtkWidget *table;
-    GtkWidget *lable_tip;
-    GtkWidget *button_sendMail;
-    GtkWidget *button_cancel;
+
+
     char *tip="收件人可以填对方的邮箱地址(固定后缀名)也可以填备注\n主题最多输入XX字";
-
-
 
 
 //创建
@@ -67,13 +67,28 @@ void interface_SendMail(GtkButton *button,gpointer fixed)
 
 
     g_signal_connect(button_sendMail, "clicked",G_CALLBACK(sendEmail),&pack);
-    if(sendEmail==1)
-    {
-        GtkWidget *label_warn;
-        label_warn = gtk_label_new("发送成功");
-        gtk_fixed_put(GTK_FIXED(fixed),label_warn,960,900);//950为中线
-    }
+    g_signal_connect(button_cancel, "clicked",G_CALLBACK(cancel),NULL);
 
+//消除右边
+    if(send==1)
+    {
+        gtk_widget_destroy(table);
+        gtk_widget_destroy(bodyInput);
+        gtk_widget_destroy(lable_body);
+        gtk_widget_destroy(lable_tip);
+        gtk_widget_destroy(button_cancel);
+        gtk_widget_destroy(button_sendMail);
+    }
+    else if(send==2)            //send为发送返回值 不同返回值不同结果
+    {
+        GtkWidget* dialog;
+        GtkMessageType type;
+        gchar* message;
+        message = "网络连接故障";
+        dialog = gtk_message_dialog_new(NULL,GTK_DIALOG_DESTROY_WITH_PARENT,type,GTK_BUTTONS_OK,message);
+        gtk_dialog_run(GTK_DIALOG(dialog));
+        gtk_widget_destroy(dialog);
+    }
 
 //显示
 
@@ -81,31 +96,62 @@ void interface_SendMail(GtkButton *button,gpointer fixed)
 }
 
 
-gint sendEmail(GtkButton *button_sendMail, gpointer date)
+int sendEmail(GtkButton *button, gpointer date)
 {
-
+//传给后端4个char *，分别为
+//gtk_entry_get_text(GTK_ENTRY(pack->ID))
+//gtk_text_buffer_get_text(buffer,&start,&end,FALSE)
+//ID (发送人的ID)
+//gtk_entry_get_text(GTK_ENTRY(pack->theme))
+    extern char *ID;
+    GtkWidget* dialog;
+    GtkMessageType type;
+    gchar* message;
     GtkTextIter start,end;
     GtkTextBuffer *buffer;
     struct PACK *pack;
     pack = (struct PACK *)date;
     buffer = pack->body;
+
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
     g_print("%s",gtk_entry_get_text(GTK_ENTRY(pack->ID)));
     g_print("%s",gtk_text_buffer_get_text(buffer,&start,&end,FALSE));
-
+    g_print("ID:%s",ID);
     gint goodsend=1;
-    if(goodsend==1)
+    type = GTK_MESSAGE_INFO;
+    switch(goodsend)
     {
-        return 1;
+        case 0:
+            message = "boy bad send";
+            break;
+        case 1:
+            message = "boy good send ";
+            break;
     }
-    else
-    {
-        return 0;
-    }
+
+    dialog = gtk_message_dialog_new(NULL,GTK_DIALOG_DESTROY_WITH_PARENT,type,GTK_BUTTONS_OK,message);
+    gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_destroy(dialog);
+
 
 
 }
+
+
+void cancel(GtkButton *button, gpointer date)
+{
+    gtk_widget_destroy(table);
+    gtk_widget_destroy(bodyInput);
+    gtk_widget_destroy(lable_body);
+    gtk_widget_destroy(lable_tip);
+    gtk_widget_destroy(button_cancel);
+    gtk_widget_destroy(button_sendMail);
+}
+
+
+
+
 
 
 
